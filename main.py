@@ -1,13 +1,18 @@
+from collisions import *
 from graphics import *
 
+
+# Config
+ballRadius = 10
+    
 
 # Collision lines
 # Structure:
 # 0: point #1
 # 1: point #2
-# 2: normal
+# 2: normal transformation matrix
 colliders = [
-    [[0, 400], [500, 400], [0, -1]] # Ground
+    [[0, 400], [500, 400], [1, -0.5]] # Ground
 ]
 
 def main():
@@ -15,11 +20,11 @@ def main():
 
     # Ball physics variables
     ballAcc = [0, 0]
-    ballVel = [0, 0]
+    ballVel = [1, 5]
     ballPos = [0, 0]
 
     # Ball rendering
-    ball = Circle(Point(ballPos[0], ballPos[1]), 10)
+    ball = Circle(Point(ballPos[0], ballPos[1]), ballRadius)
     ball.setFill("red")
     ball.draw(win)
 
@@ -34,25 +39,29 @@ def main():
         line = Line(p1, p2)
         line.setOutline("blue")
         line.draw(win)
-        # Render collider normal
-        avgX = (lineP1[0] + lineP2[0]) / 2
-        avgY = (lineP1[1] + lineP2[1]) / 2
-        p1 = Point(avgX, avgY)
-        p2 = Point(avgX + lineN[0], avgY + lineN[1] * 20)
-        line = Line(p1, p2)
-        line.setOutline("green")
-        line.draw(win)
     
     while True:
         # Update position
         ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
         ball.move(ballVel[0], ballVel[1])
 
+        # Check if ball intersects any colliders
+        for collider in colliders:
+            p1 = collider[0]
+            p2 = collider[1]
+            # Subtract coords so that the ball is at (0, 0)
+            adjPoint1 = [p1[0] - ballPos[0], p1[1] - ballPos[1]]
+            adjPoint2 = [p2[0] - ballPos[0], p2[1] - ballPos[1]]
+            if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
+                # Transform velocity according to normal
+                normal = collider[2]
+                ballVel = [ballVel[0] * normal[0], ballVel[1] * normal[1]]
+
         # Press ESC to close window
         if win.checkKey() == "Escape":
             win.close()
 
-        # Update frame (also keep framerate at 30 FPS)
-        update(30)
+        # Update frame (also keep framerate at 60 FPS)
+        update(60)
 
 main()
