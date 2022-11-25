@@ -4,24 +4,25 @@ from graphics import *
 
 # Config
 ballRadius = 10
-    
+
 
 # Collision lines
 # Structure:
 # 0: point #1
 # 1: point #2
-# 2: normal transformation matrix
+# 2: normal
 colliders = [
-    [[0, 400], [500, 400], [1, -0.5]] # Ground
+    [[0, 400], [500, 400], [-0.06, -1.6]] # Ground
 ]
 
 def main():
     win = GraphWin("Title", 500, 500, autoflush=False)
 
     # Ball physics variables
-    ballAcc = [0, 0]
-    ballVel = [1, 5]
+    ballAcc = [0, 0.098]
+    ballVel = [1, 0]
     ballPos = [0, 0]
+    ballPrevPos = [0, 0]
 
     # Ball rendering
     ball = Circle(Point(ballPos[0], ballPos[1]), ballRadius)
@@ -41,9 +42,8 @@ def main():
         line.draw(win)
     
     while True:
-        # Update position
-        ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
-        ball.move(ballVel[0], ballVel[1])
+        # Reset gravity acceleration
+        ballAcc = [0, 0.098]
 
         # Check if ball intersects any colliders
         for collider in colliders:
@@ -55,7 +55,17 @@ def main():
             if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
                 # Transform velocity according to normal
                 normal = collider[2]
-                ballVel = [ballVel[0] * normal[0], ballVel[1] * normal[1]]
+                ballAcc = [0, 0] # Remove gravity when collided
+                ballVel = [ballVel[0] + ballVel[0] * normal[0], ballVel[1] + ballVel[1] * normal[1]]
+                ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
+
+        # Update velocity and position
+        ballVel = [ballVel[0] + ballAcc[0], ballVel[1] + ballAcc[1]]
+        ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
+
+        # Render ball
+        ball.move(ballPos[0] - ballPrevPos[0], ballPos[1] - ballPrevPos[1])
+        ballPrevPos = ballPos
 
         # Press ESC to close window
         if win.checkKey() == "Escape":
