@@ -1,3 +1,11 @@
+def checkSign(n):
+    if n < 0:
+        return -1
+    if n == 0:
+        return 0
+    if n > 0:
+        return 1
+
 def circleLineIntersection(p1, p2, r):
     # Source: https://mathworld.wolfram.com/Circle-LineIntersection.html
     dx = p2[0] - p1[0]
@@ -6,7 +14,11 @@ def circleLineIntersection(p1, p2, r):
     D = p1[0] * p2[1] - p2[0] * p1[1]
     delta = r ** 2 * dr2 - D ** 2
 
+    # Check if circle intersects the infinite line
     if delta >= 0:
-        return True
-    else:
-        return False
+        # Check if circle intersects the segment
+        # (By checking the signs, since point zero has to be in between a positive and a negative value)
+        if checkSign(p1[0]) != checkSign(p2[0]) or checkSign(p1[1]) != checkSign(p2[1]):
+            return True
+
+    return False
