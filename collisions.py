@@ -1,10 +1,10 @@
+from math import *
+
 def checkSign(n):
-    if n < 0:
-        return -1
-    if n == 0:
-        return 0
-    if n > 0:
-        return 1
+    if n != 0:
+        return abs(n)/n
+    else:
+        return n
 
 def circleLineIntersection(p1, p2, r):
     # Source: https://mathworld.wolfram.com/Circle-LineIntersection.html

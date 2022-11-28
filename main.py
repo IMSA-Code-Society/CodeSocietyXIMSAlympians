@@ -1,34 +1,28 @@
 from collisions import *
 from graphics import *
-
+from math import *
+from slingshot import *
 
 # Config
-ballRadius = 10
-
-
-# Collision lines
-# Structure:
-# 0: point #1
-# 1: point #2
-# 2: normal
-colliders = [
-    [[0, 400], [500, 400], [-0.06, -1.6]], # Ground
-    [[50, 200], [200, 200], [-0.06, -1.6]]
-]
+ballRadius = 5
+friction = -0.06
 
 def main():
-    win = GraphWin("Title", 500, 500, autoflush=False)
+    win = GraphWin("Title", 1000, 500, autoflush=False)
 
-    # Ball physics variables
-    ballAcc = [0, 0.098]
-    ballVel = [1, 0]
-    ballPos = [0, 0]
-    ballPrevPos = [0, 0]
-
-    # Ball rendering
-    ball = Circle(Point(ballPos[0], ballPos[1]), ballRadius)
-    ball.setFill("red")
-    ball.draw(win)
+    # Collision lines
+    # Structure:
+    # 0: point #1
+    # 1: point #2
+    # 2: normal force vector
+    colliders = [
+        [[0, 400], [win.width, 400], [0, -1.6]], # Ground
+        [[0.000000001, 0], [0.000000001, 500], [-1.4, 0]],
+        [[win.width - 0.000000001, 0], [win.width - 0.000000001, 500], [-1.4, 0]],
+        [[500, 200], [700, 200], [0, -1.6]],
+        [[700, 400], [700, 200], [-1.4, 0]],
+        [[500, 200], [400, 100], [-1.8*cos(pi/4), -1.8*sin(pi/4)]]
+    ]
 
     # Render colliders
     for collider in colliders:
@@ -42,6 +36,22 @@ def main():
         line.setOutline("blue")
         line.draw(win)
     
+    # Ball physics variables
+    ballAcc = [0, 0.098]
+    ballPos = [100, 350]
+    ballPrevPos = ballPos
+    drawSlingshot(ballPos[0], ballPos[1], win)
+
+    # Ball rendering
+    ball = Circle(Point(ballPos[0], ballPos[1]), ballRadius)
+    ball.setFill("red")
+    ball.draw(win)
+
+    mouse = win.getMouse()
+    velcoords = [mouse.getX(), mouse.getY()]
+    ballVel = [0.2*-(velcoords[0] - ballPos[0]), 0.2*-(velcoords[1] - ballPos[1])]
+    print(ballVel)
+
     while True:
         # Reset gravity acceleration
         ballAcc = [0, 0.098]
