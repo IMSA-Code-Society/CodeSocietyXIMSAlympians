@@ -2,10 +2,41 @@ from collisions import *
 from graphics import *
 from math import *
 from slingshot import *
+from balltypes import *
 
 # Config
 ballRadius = 5
 friction = -0.06
+balls = []
+
+# this code runs every iteration of the simulation, and moves the balls
+# this is in a function so that it can be iterated for every ball in balls
+def updates(ball, colliders):
+
+    # Reset gravity acceleration
+        ball.acc = [0, 0.098]
+
+        # Check if ball intersects any colliders
+        for collider in colliders:
+            p1 = collider[0]
+            p2 = collider[1]
+            # Subtract coords so that the ball is at (0, 0)
+            adjPoint1 = [p1[0] - ball.pos[0], p1[1] - ball.pos[1]]
+            adjPoint2 = [p2[0] - ball.pos[0], p2[1] - ball.pos[1]]
+            if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
+                # Transform velocity according to normal
+                normal = collider[2]
+                ball.acc = [0, 0] # Remove gravity when collided
+                ball.vel = [ball.vel[0] + ball.vel[0] * normal[0], ball.vel[1] + ball.vel[1] * normal[1]]
+                ball.pos = [ball.pos[0] + ball.vel[0], ball.pos[1] + ball.vel[1]]
+
+        # Update velocity and position
+        ball.vel = [ball.vel[0] + ball.acc[0], ball.vel[1] + ball.acc[1]]
+        ball.pos = [ball.pos[0] + ball.vel[0], ball.pos[1] + ball.vel[1]]
+
+        # Render ball
+        ball.move(ball.pos[0] - ball.prevPos[0], ball.pos[1] - ball.prevPos[1])
+        ball.prevPos = ball.pos
 
 def main():
     win = GraphWin("Title", 1000, 500, autoflush=False)
@@ -37,50 +68,31 @@ def main():
         line.draw(win)
     
     # Ball physics variables
-    ballAcc = [0, 0.098]
     ballPos = [100, 350]
-    ballPrevPos = ballPos
+    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}
     drawSlingshot(ballPos[0], ballPos[1], win)
 
-    # Ball rendering
-    ball = Circle(Point(ballPos[0], ballPos[1]), ballRadius)
-    ball.setFill("red")
-    ball.draw(win)
+    # Creates ball and sets its velocity according to the slingshot
+    ball = Ball(ballVars, win)
+    velcoords = slingMouse(win)
+    ball.vel = [0.2*-(velcoords[0] - ballPos[0]), 0.2*-(velcoords[1] - ballPos[1])]
 
-    mouse = win.getMouse()
-    velcoords = [mouse.getX(), mouse.getY()]
-    ballVel = [0.2*-(velcoords[0] - ballPos[0]), 0.2*-(velcoords[1] - ballPos[1])]
-    print(ballVel)
+    balls.append(ball) # adds the ball to the array of balls for updating
 
-    while True:
-        # Reset gravity acceleration
-        ballAcc = [0, 0.098]
-
-        # Check if ball intersects any colliders
-        for collider in colliders:
-            p1 = collider[0]
-            p2 = collider[1]
-            # Subtract coords so that the ball is at (0, 0)
-            adjPoint1 = [p1[0] - ballPos[0], p1[1] - ballPos[1]]
-            adjPoint2 = [p2[0] - ballPos[0], p2[1] - ballPos[1]]
-            if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
-                # Transform velocity according to normal
-                normal = collider[2]
-                ballAcc = [0, 0] # Remove gravity when collided
-                ballVel = [ballVel[0] + ballVel[0] * normal[0], ballVel[1] + ballVel[1] * normal[1]]
-                ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
-
-        # Update velocity and position
-        ballVel = [ballVel[0] + ballAcc[0], ballVel[1] + ballAcc[1]]
-        ballPos = [ballPos[0] + ballVel[0], ballPos[1] + ballVel[1]]
-
-        # Render ball
-        ball.move(ballPos[0] - ballPrevPos[0], ballPos[1] - ballPrevPos[1])
-        ballPrevPos = ballPos
+    while win.isOpen():
+        for ball in balls: # updates every ball in the system
+            updates(ball, colliders)
 
         # Press ESC to close window
         if win.checkKey() == "Escape":
             win.close()
+
+        if (win.checkMouse()):
+            newBalls = ball.click()
+            if (newBalls):
+                for newBall in newBalls:
+                    newBall.canClick = False
+                    balls.append(newBall)
 
         # Update frame (also keep framerate at 60 FPS)
         update(60)
