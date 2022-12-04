@@ -47,10 +47,8 @@ def main():
     ball.setFill("red")
     ball.draw(win)
 
-    mouse = win.getMouse()
-    velcoords = [mouse.getX(), mouse.getY()]
+    velcoords = slingMouse(win)
     ballVel = [0.2*-(velcoords[0] - ballPos[0]), 0.2*-(velcoords[1] - ballPos[1])]
-    print(ballVel)
 
     while win.isOpen():
         # Reset gravity acceleration
