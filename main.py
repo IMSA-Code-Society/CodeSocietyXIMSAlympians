@@ -75,8 +75,8 @@ def main():
 
     # Creates ball and sets its velocity according to the slingshot
     ball = Ball(ballVars, win)
-    velcoords = slingMouse(win)
-    ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
+    velCoords = slingMouse(win)
+    ball.vel = [0.1*-(velCoords[0] - ballPos[0]), 0.1*-(velCoords[1] - ballPos[1])]
 
     balls.append(ball) # adds the ball to the array of balls for updating
 
@@ -88,6 +88,7 @@ def main():
         if win.checkKey() == "Escape":
             win.close()
 
+        # Ball click
         if (win.checkMouse()):
             newBalls = ball.click()
             if (newBalls):
