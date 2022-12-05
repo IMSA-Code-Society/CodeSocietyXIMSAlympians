@@ -6,11 +6,7 @@ def drawSlingshot(bx, by, win):
 
 def slingMouse(win):
     start = win.checkMouse()
-    mPos = [0, 0]
     while start == None:
         start = win.checkMouse()
-        update(60)
-    while start != None:
-        mPos = [start.getX(), start.getY()]
-        start = win.checkMouse() 
+    mPos = [start.getX(), start.getY()]
     return mPos
