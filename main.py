@@ -69,7 +69,7 @@ def main():
     
     # Ball physics variables
     ballPos = [100, 350]
-    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}
+    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
