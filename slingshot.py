@@ -1,7 +1,7 @@
 from graphics import *
 
 def drawSlingshot(bx, by, win):
-    slingshot = Image(Point(bx, by), 'slingshot.png')
+    slingshot = Image(Point(bx, by+20), 'slingshot.png')
     slingshot.draw(win)
 
 def slingMouse(win):

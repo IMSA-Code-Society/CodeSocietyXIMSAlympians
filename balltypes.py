@@ -34,8 +34,8 @@ class Ball:
                     self.vel[1] += 5*(self.vel[1]/sqrt(v2))
                 
             if (self.color == "blue"): # creates two new balls, one above one below, and returns them to be added to the balls array
-                if(v2 == 0):
-                    return [self, self]
-                else:
-                    return [Ball({"acc" : self.acc, "vel" : [self.vel[0] + 1*self.vel[1]/sqrt(v2), self.vel[1] - 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win),
-                        Ball({"acc" : self.acc, "vel" : [self.vel[0] - 1*self.vel[1]/sqrt(v2), self.vel[1] + 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win)]
+                return [Ball({"acc" : self.acc, "vel" : [self.vel[0] + 1*self.vel[1]/sqrt(v2), self.vel[1] - 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 6}, self.win),
+                        Ball({"acc" : self.acc, "vel" : [self.vel[0] - 1*self.vel[1]/sqrt(v2), self.vel[1] + 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 6}, self.win)]
+    def removeBall(self):
+        print('yessir')
+        self.circle.undraw()
