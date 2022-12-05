@@ -27,11 +27,8 @@ class Ball:
             v2 = self.vel[0]**2 + self.vel[1]**2
 
             if (self.color == "yellow"):
-                if (v2 == 0):
-                    self.vel[0] = 0
-                else:
-                    self.vel[0] += 5*(self.vel[0]/sqrt(v2))
-                    self.vel[1] += 5*(self.vel[1]/sqrt(v2))
+                self.vel[0] += 5*(self.vel[0]/sqrt(v2))
+                self.vel[1] += 5*(self.vel[1]/sqrt(v2))
                 
             if (self.color == "blue"): # creates two new balls, one above one below, and returns them to be added to the balls array
                 return [Ball({"acc" : self.acc, "vel" : [self.vel[0] + 1*self.vel[1]/sqrt(v2), self.vel[1] - 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 6}, self.win),

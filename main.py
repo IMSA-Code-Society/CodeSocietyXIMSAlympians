@@ -49,12 +49,12 @@ def main():
     # 1: point #2
     # 2: normal force vector
     colliders = [
-        [[0, 400], [win.width, 400], [-0.05, -1.6]], # Ground
-        [[0.000000001, 0], [0.000000001, 500], [-1.4, 0]],
-        [[win.width - 0.000000001, 0], [win.width - 0.000000001, 500], [-1.4, 0]],
-        [[500, 200], [700, 200], [0, -1.6]],
-        [[700, 400], [700, 200], [-1.4, 0]],
-        [[500, 200], [400, 100], [-1.8*cos(pi/4), -1.8*sin(pi/4)]]
+        [[0, 400], [win.width, 400], [-0.05, -1.6], 'f'], # Ground
+        [[0.000000001, 0], [0.000000001, 500], [-1.4, 0], 'f'], # Left Border
+        [[win.width - 0.000000001, 0], [win.width - 0.000000001, 500], [-1.4, 0], 'f'], # Right Border
+        [[500, 200], [700, 200], [0, -1.6], 'b'],
+        [[700, 400], [700, 200], [-1.4, 0], 'b'],
+        [[500, 200], [400, 100], [-1.8*cos(pi/4), -1.8*sin(pi/4)], 'b']
     ]
 
     # Render colliders
@@ -98,7 +98,7 @@ def main():
                     balls.append(newBall)
 
         for b in balls:
-            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.01 and abs(b.acc[0]) <= 0.01 or abs(b.pos[0]-500)>500:
+            if (max(abs(b.vel[0]), abs(b.vel[1])) <= 0.5 and abs(b.acc[0]) <= 0.1 and b.pos[1] + b.radius >= 395) or abs(b.pos[0]-500)>500:
                 b.removeBall()
                 balls.remove(b)
                 if len(balls) == 0:
