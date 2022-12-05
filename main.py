@@ -98,11 +98,7 @@ def main():
                     balls.append(newBall)
 
         for b in balls:
-<<<<<<< HEAD
-            if (sqrt(b.vel[0]**2 + b.vel[1]**2) <= 0.01 or abs(b.pos[0]-500)>500):
-=======
             if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.01 and abs(b.acc[0]) <= 0.01 or abs(b.pos[0]-500)>500:
->>>>>>> 95921cdb177ab6fdf452dc0be31ed35697e75b99
                 b.removeBall()
                 balls.remove(b)
                 if len(balls) == 0:
