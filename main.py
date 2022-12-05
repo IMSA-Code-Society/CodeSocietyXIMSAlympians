@@ -96,7 +96,7 @@ def main():
                     newBall.canClick = False
                     balls.append(newBall)
 
-        # Update frame (also keep framerate at 60 FPS)
+        # Update frame (also keep framerate at 720 FPS)
         update(fps)
 
 main()
