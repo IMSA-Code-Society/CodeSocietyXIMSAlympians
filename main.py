@@ -5,7 +5,6 @@ from slingshot import *
 from balltypes import *
 
 # Config
-ballRadius = 5
 friction = -0.06
 balls = []
 fps = 240
@@ -24,7 +23,7 @@ def updates(ball, colliders):
             # Subtract coords so that the ball is at (0, 0)
             adjPoint1 = [p1[0] - ball.pos[0], p1[1] - ball.pos[1]]
             adjPoint2 = [p2[0] - ball.pos[0], p2[1] - ball.pos[1]]
-            if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
+            if circleLineIntersection(adjPoint1, adjPoint2, ball.radius):
                 # Transform velocity according to normal
                 normal = collider[2]
                 if(abs(normal[1]) >= 0.1 and abs(normal[0]) <= 0.1):
