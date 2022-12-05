@@ -6,7 +6,6 @@ from balltypes import *
 from random import *
 
 # Config
-ballRadius = 5
 friction = -0.06
 balls = []
 fps = 240
@@ -25,7 +24,7 @@ def updates(ball, colliders):
             # Subtract coords so that the ball is at (0, 0)
             adjPoint1 = [p1[0] - ball.pos[0], p1[1] - ball.pos[1]]
             adjPoint2 = [p2[0] - ball.pos[0], p2[1] - ball.pos[1]]
-            if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
+            if circleLineIntersection(adjPoint1, adjPoint2, ball.radius):
                 # Transform velocity according to normal
                 normal = collider[2]
                 if(abs(normal[1]) >= 0.1 and abs(normal[0]) <= 0.1):
@@ -76,9 +75,9 @@ def main():
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
-    ball = Ball(ballVars[randint(0, 2)], win)
-    velcoords = slingMouse(win)
-    ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
+    ball = Ball(ballVars, win)
+    velCoords = slingMouse(win)
+    ball.vel = [0.1*-(velCoords[0] - ballPos[0]), 0.1*-(velCoords[1] - ballPos[1])]
 
     balls.append(ball) # adds the ball to the array of balls for updating
 
@@ -90,6 +89,7 @@ def main():
         if win.checkKey() == "Escape":
             win.close()
 
+        # Ball click
         if (win.checkMouse()):
             newBalls = ball.click()
             if (newBalls):
