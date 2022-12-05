@@ -7,7 +7,7 @@ from balltypes import *
 # Config
 friction = -0.06
 balls = []
-fps = 240
+fps = 120
 
 # this code runs every iteration of the simulation, and moves the balls
 # this is in a function so that it can be iterated for every ball in balls
