@@ -8,6 +8,7 @@ from balltypes import *
 ballRadius = 5
 friction = -0.06
 balls = []
+fps = 60
 
 # this code runs every iteration of the simulation, and moves the balls
 # this is in a function so that it can be iterated for every ball in balls
@@ -70,7 +71,7 @@ def main():
     
     # Ball physics variables
     ballPos = [100, 360]
-    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}
+    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
@@ -96,6 +97,6 @@ def main():
                     balls.append(newBall)
 
         # Update frame (also keep framerate at 60 FPS)
-        update(60)
+        update(fps)
 
 main()
