@@ -8,14 +8,14 @@ from balltypes import *
 ballRadius = 5
 friction = -0.06
 balls = []
-fps = 60
+fps = 240
 
 # this code runs every iteration of the simulation, and moves the balls
 # this is in a function so that it can be iterated for every ball in balls
 def updates(ball, colliders):
 
     # Reset gravity acceleration
-        ball.acc = [0, 0.098]
+        ball.acc = [0, 5.88/fps]
 
         # Check if ball intersects any colliders
         for collider in colliders:
@@ -71,13 +71,13 @@ def main():
     
     # Ball physics variables
     ballPos = [100, 360]
-    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
+    ballVars = {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
     ball = Ball(ballVars, win)
     velcoords = slingMouse(win)
-    ball.vel = [0.2*-(velcoords[0] - ballPos[0]), 0.2*-(velcoords[1] - ballPos[1])]
+    ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
 
     balls.append(ball) # adds the ball to the array of balls for updating
 

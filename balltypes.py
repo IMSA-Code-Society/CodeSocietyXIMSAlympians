@@ -35,8 +35,7 @@ class Ball:
                 
             if (self.color == "blue"): # creates two new balls, one above one below, and returns them to be added to the balls array
                 if(v2 == 0):
-                    return [Ball({"acc" : self.acc, "vel" : self.vel, "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win),
-                        Ball({"acc" : self.acc, "vel" : self.vel, "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win)]
+                    return [self, self]
                 else:
                     return [Ball({"acc" : self.acc, "vel" : [self.vel[0] + 1*self.vel[1]/sqrt(v2), self.vel[1] - 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win),
                         Ball({"acc" : self.acc, "vel" : [self.vel[0] - 1*self.vel[1]/sqrt(v2), self.vel[1] + 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 10}, self.win)]
