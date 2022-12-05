@@ -26,7 +26,8 @@ def updates(ball, colliders):
             if circleLineIntersection(adjPoint1, adjPoint2, ballRadius):
                 # Transform velocity according to normal
                 normal = collider[2]
-                ball.acc = [0, 0] # Remove gravity when collided
+                if(abs(normal[1]) >= 0.1 and abs(normal[0]) <= 0.1):
+                    ball.acc = [0, 0] # Remove gravity when collided
                 ball.vel = [ball.vel[0] + ball.vel[0] * normal[0], ball.vel[1] + ball.vel[1] * normal[1]]
                 ball.pos = [ball.pos[0] + ball.vel[0], ball.pos[1] + ball.vel[1]]
 
@@ -47,7 +48,7 @@ def main():
     # 1: point #2
     # 2: normal force vector
     colliders = [
-        [[0, 400], [win.width, 400], [0, -1.6]], # Ground
+        [[0, 400], [win.width, 400], [-0.05, -1.6]], # Ground
         [[0.000000001, 0], [0.000000001, 500], [-1.4, 0]],
         [[win.width - 0.000000001, 0], [win.width - 0.000000001, 500], [-1.4, 0]],
         [[500, 200], [700, 200], [0, -1.6]],
@@ -68,8 +69,8 @@ def main():
         line.draw(win)
     
     # Ball physics variables
-    ballPos = [100, 350]
-    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
+    ballPos = [100, 360]
+    ballVars = {"acc" : [0, 0.098], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
