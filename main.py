@@ -98,7 +98,7 @@ def main():
                     balls.append(newBall)
 
         for b in balls:
-            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.01 or abs(b.pos[0]-500)>500:
+            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.01 and abs(b.acc[0]) <= 0.01 or abs(b.pos[0]-500)>500:
                 b.removeBall()
                 balls.remove(b)
                 if len(balls) == 0:
