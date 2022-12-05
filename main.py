@@ -3,6 +3,7 @@ from graphics import *
 from math import *
 from slingshot import *
 from balltypes import *
+from random import *
 
 # Config
 ballRadius = 5
@@ -71,11 +72,11 @@ def main():
     
     # Ball physics variables
     ballPos = [100, 360]
-    ballVars = {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 10}
+    ballVars = [{"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "red", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 6}]
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
-    ball = Ball(ballVars, win)
+    ball = Ball(ballVars[randint(0, 2)], win)
     velcoords = slingMouse(win)
     ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
 
@@ -95,6 +96,18 @@ def main():
                 for newBall in newBalls:
                     newBall.canClick = False
                     balls.append(newBall)
+
+        for b in balls:
+            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.001:
+                b.removeBall()
+                balls.remove(b)
+                if len(balls) == 0:
+                    ballVars = [{"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "red", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 6}]
+                    ball = Ball(ballVars[randint(0, 2)], win)
+                    velcoords = slingMouse(win)
+                    ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
+                    balls.append(ball)
+                    break
 
         # Update frame (also keep framerate at 720 FPS)
         update(fps)
