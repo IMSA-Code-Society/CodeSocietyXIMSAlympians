@@ -75,7 +75,7 @@ def main():
     drawSlingshot(ballPos[0], ballPos[1], win)
 
     # Creates ball and sets its velocity according to the slingshot
-    ball = Ball(ballVars, win)
+    ball = Ball(ballVars[randint(0, 2)], win)
     velCoords = slingMouse(win)
     ball.vel = [0.1*-(velCoords[0] - ballPos[0]), 0.1*-(velCoords[1] - ballPos[1])]
 
@@ -98,7 +98,7 @@ def main():
                     balls.append(newBall)
 
         for b in balls:
-            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.001:
+            if max(abs(b.vel[0]), abs(b.vel[1])) <= 0.01 or abs(b.pos[0]-500)>500:
                 b.removeBall()
                 balls.remove(b)
                 if len(balls) == 0:
