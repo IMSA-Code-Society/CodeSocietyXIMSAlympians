@@ -12,7 +12,7 @@ fps = 120
 
 # this code runs every iteration of the simulation, and moves the balls
 # this is in a function so that it can be iterated for every ball in balls
-def updates(ball, colliders):
+def updates(ball, colliders, win):
 
     # Reset gravity acceleration
         ball.acc = [0, 5.88/fps]
@@ -32,6 +32,14 @@ def updates(ball, colliders):
                 ball.vel = [ball.vel[0] + ball.vel[0] * normal[0], ball.vel[1] + ball.vel[1] * normal[1]]
                 ball.pos = [ball.pos[0] + ball.vel[0], ball.pos[1] + ball.vel[1]]
 
+                if(collider[3] == 'b'):
+                    for item in win.items[:]:
+                        if item.__class__.__name__ == "Line":
+                            if item.p1.x == collider[0][0] and item.p2.y == collider[1][1]:
+                                item.undraw();
+                    colliders.remove(collider);
+                    win.update();
+
         # Update velocity and position
         ball.vel = [ball.vel[0] + ball.acc[0], ball.vel[1] + ball.acc[1]]
         ball.pos = [ball.pos[0] + ball.vel[0], ball.pos[1] + ball.vel[1]]
@@ -43,15 +51,23 @@ def updates(ball, colliders):
 def main():
     win = GraphWin("Title", 1000, 500, autoflush=False)
 
+    #Draws background
+    grass = Polygon(Point(0,400),Point(win.width,400),Point(win.width,500),Point(0,500))
+    grass.setFill(color_rgb(19,133,16))
+    grass.draw(win)
+    sky = Polygon(Point(0,400),Point(win.width,400),Point(win.width,0),Point(0,0))
+    sky.setFill(color_rgb(0,181,226))
+    sky.draw(win)
+
     # Collision lines
     # Structure:
     # 0: point #1
     # 1: point #2
     # 2: normal force vector
     colliders = [
-        [[0, 400], [win.width, 400], [-0.05, -1.6], 'f'], # Ground
-        [[0.000000001, 0], [0.000000001, 500], [-1.4, 0], 'f'], # Left Border
-        [[win.width - 0.000000001, 0], [win.width - 0.000000001, 500], [-1.4, 0], 'f'], # Right Border
+        [[0, 400], [win.width, 400], [friction, -1.2], 'f'], # Ground
+        [[0.000000001, -500], [0.000000001, 500], [-1.2, 0], 'f'], # Left Border
+        [[win.width - 0.000000001, -500], [win.width - 0.000000001, 500], [-1.2, 0], 'f'], # Right Border
         [[500, 200], [700, 200], [0, -1.6], 'b'],
         [[700, 400], [700, 200], [-1.4, 0], 'b'],
         [[500, 200], [400, 100], [-1.8*cos(pi/4), -1.8*sin(pi/4)], 'b'],
@@ -67,7 +83,9 @@ def main():
         p1 = Point(lineP1[0], lineP1[1])
         p2 = Point(lineP2[0], lineP2[1])
         line = Line(p1, p2)
-        line.setOutline("blue")
+        if(collider[3] == 'b'):
+            line.setOutline(color_rgb(153, 51, 0))
+            line.setWidth(5);
         line.draw(win)
     
     # Ball physics variables
@@ -84,7 +102,7 @@ def main():
 
     while win.isOpen():
         for ball in balls: # updates every ball in the system
-            updates(ball, colliders)
+            updates(ball, colliders, win)
 
         # Press ESC to close window
         if win.checkKey() == "Escape":
@@ -99,12 +117,12 @@ def main():
                     balls.append(newBall)
 
         for b in balls:
-            if (max(abs(b.vel[0]), abs(b.vel[1])) <= 0.5 and abs(b.acc[0]) <= 0.1 and b.pos[1] + b.radius >= 395) or abs(b.pos[0]-500)>500:
+            if (max(abs(b.vel[0]), abs(b.vel[1])) <= 0.5 and abs(b.acc[0]) <= 0.1 and b.pos[1] + b.radius >= colliders[0][0][1]-5) or abs(b.pos[0]-500)>500 or abs(b.pos[0]-500)<0:
                 b.removeBall()
                 balls.remove(b)
                 if len(balls) == 0:
-                    ballVars = [{"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "red", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 6}]
-                    ball = Ball(ballVars[randint(0, 2)], win)
+                    ballVars = [{"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "red", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "yellow", "radius": 10}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : "blue", "radius": 6}, {"acc" : [0, 5.88/fps], "vel" : [1, 0], "pos" : ballPos, "prevPos" : ballPos, "color" : color_rgb(192,192,192), "radius": 10}]
+                    ball = Ball(ballVars[randint(0, 3)], win)
                     velcoords = slingMouse(win)
                     ball.vel = [0.1*-(velcoords[0] - ballPos[0]), 0.1*-(velcoords[1] - ballPos[1])]
                     balls.append(ball)
