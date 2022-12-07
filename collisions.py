@@ -5,7 +5,7 @@ def checkSign(n):
         return abs(n)/n
     else:
         return n
-"""
+
 def circleLineIntersection(p1, p2, r):
     # Source: https://mathworld.wolfram.com/Circle-LineIntersection.html
     dx = p2[0] - p1[0]
