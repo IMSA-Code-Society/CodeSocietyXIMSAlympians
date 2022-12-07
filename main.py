@@ -94,7 +94,7 @@ def main():
     # 1: point #2
     # 2: normal force vector
     colliders = [
-        [[0, 400], [win.width, 400], [friction, -1.2], 'f'], # Ground
+        [[0, 400], [win.width, 400], [friction, -1.5], 'f'], # Ground
         #[[0.000000001, -500], [0.000000001, 500], [-1.2, 0], 'f'], # Left Border
         #[[win.width - 0.000000001, -500], [win.width - 0.000000001, 500], [-1.2, 0], 'f'], # Right Border
         #[[500, 200], [700, 200], [0, -1.6], 'b'],
