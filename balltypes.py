@@ -43,3 +43,26 @@ class Ball:
 
     def removeBall(self):
         self.circle.undraw()
+
+class Block():
+    def __init__(self, params, win):
+        # unpacks the dictonary input and sets all fields equal to their initial values
+        self.acc = params["acc"]
+        self.vel = params["vel"]
+        self.pos = params["pos"]
+        self.pos2 = params["pos2"]
+        self.prevPos = params["prevPos"]
+        self.color = params["color"]
+        # self.radius = self.pos2[0] - self.pos[0]
+        self.win = win
+        self.canClick = True
+
+        self.rect = Rectangle(Point(self.pos[0], self.pos[1]), Point(self.pos2[0], self.pos2[1]))
+        self.rect.setFill(self.color)
+        self.rect.draw(self.win)
+
+    def move(self, x, y): # the Block move function uses the rect move function from Graphics.py
+        self.rect.move(x, y)
+
+    def undraw(self):
+        self.rect.undraw()

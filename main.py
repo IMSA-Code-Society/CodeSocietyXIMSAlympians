@@ -8,6 +8,7 @@ from random import *
 # Config
 friction = -0.06
 balls = []
+blocks = []
 fps = 120
 
 # this code runs every iteration of the simulation, and moves the balls
@@ -39,6 +40,10 @@ def updates(ball, colliders, win):
                                 item.undraw();
                     colliders.remove(collider);
                     win.update();
+        
+        for block in blocks:
+            if (True in circleBlockIntersection(ball, block)):
+                block.undraw()
 
         # Update velocity and position
         ball.vel = [ball.vel[0] + ball.acc[0], ball.vel[1] + ball.acc[1]]
@@ -99,6 +104,18 @@ def main():
     ball.vel = [0.1*-(velCoords[0] - ballPos[0]), 0.1*-(velCoords[1] - ballPos[1])]
 
     balls.append(ball) # adds the ball to the array of balls for updating
+
+    # adds the blocks at the end that don't have gravity, but disappear when hit
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [820, 320], "pos2" : [830, 400], "prevPos" : [300, 200], "color" : "brown"}, win))
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [910, 320], "pos2" : [920, 400], "prevPos" : [300, 200], "color" : "brown"}, win))
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [820, 320], "pos2" : [920, 310], "prevPos" : [300, 200], "color" : "brown"}, win))
+
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [840, 310], "pos2" : [850, 230], "prevPos" : [300, 200], "color" : "brown"}, win))
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [890, 310], "pos2" : [900, 230], "prevPos" : [300, 200], "color" : "brown"}, win))
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [840, 240], "pos2" : [900, 230], "prevPos" : [300, 200], "color" : "brown"}, win))
+
+    blocks.append(Block({"acc" : [0, 0], "vel" : [0, 0], "pos" : [840, 170], "pos2" : [900, 230], "prevPos" : [300, 200], "color" : "green"}, win))
+
 
     while win.isOpen():
         for ball in balls: # updates every ball in the system
