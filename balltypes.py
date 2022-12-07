@@ -27,11 +27,42 @@ class Ball:
             v2 = self.vel[0]**2 + self.vel[1]**2
 
             if (self.color == "yellow"):
-                self.vel[0] += 5*(self.vel[0]/sqrt(v2))
-                self.vel[1] += 5*(self.vel[1]/sqrt(v2))
+                if (v2 == 0):
+                    self.vel[0] = 0
+                else:
+                    self.vel[0] += 5*(self.vel[0]/sqrt(v2))
+                    self.vel[1] += 5*(self.vel[1]/sqrt(v2))
                 
             if (self.color == "blue"): # creates two new balls, one above one below, and returns them to be added to the balls array
                 return [Ball({"acc" : self.acc, "vel" : [self.vel[0] + 1*self.vel[1]/sqrt(v2), self.vel[1] - 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 6}, self.win),
                         Ball({"acc" : self.acc, "vel" : [self.vel[0] - 1*self.vel[1]/sqrt(v2), self.vel[1] + 1*self.vel[0]/sqrt(v2)], "pos" : self.pos, "prevPos" : self.pos, "color" : "blue", "radius": 6}, self.win)]
+    
+            if(self.color == color_rgb(192,192,192)):
+                #self.vel[1] = -self.vel[1]
+                self.vel[1] -= 5
+
     def removeBall(self):
         self.circle.undraw()
+
+class Block():
+    def __init__(self, params, win):
+        # unpacks the dictonary input and sets all fields equal to their initial values
+        self.acc = params["acc"]
+        self.vel = params["vel"]
+        self.pos = params["pos"]
+        self.pos2 = params["pos2"]
+        self.prevPos = params["prevPos"]
+        self.color = params["color"]
+        # self.radius = self.pos2[0] - self.pos[0]
+        self.win = win
+        self.canClick = True
+
+        self.rect = Rectangle(Point(self.pos[0], self.pos[1]), Point(self.pos2[0], self.pos2[1]))
+        self.rect.setFill(self.color)
+        self.rect.draw(self.win)
+
+    def move(self, x, y): # the Block move function uses the rect move function from Graphics.py
+        self.rect.move(x, y)
+
+    def undraw(self):
+        self.rect.undraw()
