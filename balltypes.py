@@ -39,7 +39,10 @@ class Ball:
     
             if(self.color == color_rgb(192,192,192)):
                 #self.vel[1] = -self.vel[1]
-                self.vel[1] -= 5
+                newBall = [Ball({"acc" : [0, self.acc[1]], "vel" : [0,0], "pos" : self.pos, "prevPos" : self.pos, "color" : color_rgb(192,192,192), "radius": 6}, self.win)]
+                self.vel[0] *= 0.6
+                self.vel[1] -= 3
+                return newBall
 
     def removeBall(self):
         self.circle.undraw()
@@ -55,7 +58,6 @@ class Block():
         self.color = params["color"]
         # self.radius = self.pos2[0] - self.pos[0]
         self.win = win
-        self.canClick = True
 
         self.rect = Rectangle(Point(self.pos[0], self.pos[1]), Point(self.pos2[0], self.pos2[1]))
         self.rect.setFill(self.color)
